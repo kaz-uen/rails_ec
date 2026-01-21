@@ -93,4 +93,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Herokuのドメインを許可する
+  config.hosts << "anonymous-ec-47976436da70.herokuapp.com"
 end
