@@ -26,6 +26,7 @@ RUN bundle install
 COPY package.json yarn.lock ./
 RUN yarn install
 
+# Cache bust: 2026-01-22
 COPY . /myapp
 
 # Add a script to be executed every time the container starts.
