@@ -95,5 +95,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Herokuのドメインを許可する
-  config.hosts << "anonymous-ec-47976436da70.herokuapp.com"
+  config.hosts << /.*\.herokuapp\.com/
 end
