@@ -26,8 +26,10 @@ RUN bundle install
 COPY package.json yarn.lock ./
 RUN yarn install
 
-# Cache bust: 2026-01-22
 COPY . /myapp
+
+# 本番用のアセット（CSS/JS）を生成
+RUN bundle exec rails assets:precompile RAILS_ENV=production
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
