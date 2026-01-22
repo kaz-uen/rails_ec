@@ -29,7 +29,7 @@ RUN yarn install
 COPY . /myapp
 
 # 本番用のアセット（CSS/JS）を生成（ダミーのキーを渡してビルドを無理やり通す）
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile RAILS_ENV=production
+RUN SECRET_KEY_BASE=1 bundle exec rails assets:precompile RAILS_ENV=production
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
