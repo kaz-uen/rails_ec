@@ -88,18 +88,18 @@ products_data.each do |data|
     description: data[:description],
     price: data[:price],
     original_price: data[:original_price],
-    stock_quantity: data[:stock_quantity],
+    stock_quantity: data[:stock_quantity]
     # is_on_saleは自動設定されるため、指定不要
   )
 
   # 画像を添付
-  image = URI.open(data[:image_url])
+  image = URI.parse(data[:image_url]).open
   product.image.attach(
     io: image,
     filename: "#{data[:sku].parameterize}.jpg",
     content_type: 'image/jpeg'
   )
-  puts "Created product: #{product.name} (SKU: #{product.sku}, On Sale: #{product.is_on_sale})"
+  Rails.logger.info "Created product: #{product.name} (SKU: #{product.sku}, On Sale: #{product.is_on_sale})"
 end
 
-puts "Seeded #{Product.count} products"
+Rails.logger.info "Seeded #{Product.count} products"
