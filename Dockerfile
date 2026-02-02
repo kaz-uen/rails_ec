@@ -24,7 +24,7 @@ COPY Gemfile.lock /myapp/Gemfile.lock
 RUN bundle install
 
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn cache clean && yarn install --frozen-lockfile --ignore-optional
 
 COPY . /myapp
 
