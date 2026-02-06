@@ -24,8 +24,7 @@ module Admin
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @product.update(product_params)
@@ -41,6 +40,7 @@ module Admin
     end
 
     private
+
     def set_product
       @product = Product.find(params[:id])
     end
