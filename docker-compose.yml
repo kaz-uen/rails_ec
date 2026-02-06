@@ -18,6 +18,9 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    environment:
+      - ADMIN_BASIC_AUTH_NAME=admin
+      - ADMIN_BASIC_AUTH_PASSWORD=pw
   js:
     image: rails_template:latest
     command: yarn build --watch
