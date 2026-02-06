@@ -1,0 +1,57 @@
+<%= form_with model: [:admin, @product], local: true, multipart: true, class: "needs-validation", novalidate: true do |form| %>
+  <% if @product.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@product.errors.count, "件のエラー") %>があります：</h4>
+      <ul class="mb-0">
+        <% @product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :sku, "SKU", class: "form-label" %>
+    <%= form.text_field :sku, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :name, "商品名", class: "form-label" %>
+    <%= form.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :description, "商品説明", class: "form-label" %>
+    <%= form.text_area :description, class: "form-control", rows: 5, required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :price, "価格", class: "form-label" %>
+    <%= form.number_field :price, class: "form-control", step: 0.01, min: 0, required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :original_price, "割引前価格", class: "form-label" %>
+    <%= form.number_field :original_price, class: "form-control", step: 0.01, min: 0 %>
+    <small class="form-text text-muted">セール商品の場合のみ入力してください</small>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :stock_quantity, "在庫数", class: "form-label" %>
+    <%= form.number_field :stock_quantity, class: "form-control", min: 0, required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :image, "商品画像", class: "form-label" %>
+    <%= form.file_field :image, class: "form-control", accept: "image/*" %>
+    <% if @product.image.attached? %>
+      <div class="mt-2">
+        <%= image_tag @product.image, class: "img-thumbnail", style: "max-width: 200px;" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.submit "保存", class: "btn btn-primary" %>
+  </div>
+<% end %>
