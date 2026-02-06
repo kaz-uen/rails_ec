@@ -4,7 +4,7 @@ module Admin
   class ProductsController < BaseController
     layout 'admin'  # 管理者用レイアウトを使用
 
-    before_action :set_product, only: %i[show edit update destroy]
+    before_action :set_product, only: %i[edit update destroy]
 
     def index
       @products = Product.all.order(created_at: :desc)
