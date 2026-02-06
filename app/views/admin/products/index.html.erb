@@ -2,7 +2,6 @@
   <h1>商品一覧</h1>
   <%= link_to "新規作成", new_admin_product_path, class: "btn btn-primary" %>
 </div>
-
 <table class="table table-striped">
   <thead>
     <tr>
@@ -34,7 +33,7 @@
         </td>
         <td>
           <%= link_to "編集", edit_admin_product_path(product), class: "btn btn-sm btn-outline-primary me-1" %>
-					<%= link_to "削除", admin_product_path(product),
+          <%= link_to "削除", admin_product_path(product),
             data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
             class: "btn btn-sm btn-outline-danger" %>
         </td>
