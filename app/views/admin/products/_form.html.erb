@@ -1,9 +1,9 @@
-<%= form_with model: [:admin, @product], local: true, multipart: true, class: "needs-validation", novalidate: true do |form| %>
-  <% if @product.errors.any? %>
+<%= form_with model: [:admin, product], local: true, multipart: true, class: "needs-validation", novalidate: true do |form| %>
+  <% if product.errors.any? %>
     <div class="alert alert-danger">
-      <h4><%= pluralize(@product.errors.count, "件のエラー") %>があります：</h4>
+      <h4><%= pluralize(product.errors.count, "件のエラー") %>があります：</h4>
       <ul class="mb-0">
-        <% @product.errors.full_messages.each do |message| %>
+        <% product.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
@@ -37,9 +37,9 @@
   <div class="mb-3">
     <%= form.label :image, "商品画像", class: "form-label" %>
     <%= form.file_field :image, class: "form-control", accept: "image/*" %>
-    <% if @product.image.attached? %>
+    <% if product.image.attached? %>
       <div class="mt-2">
-        <%= image_tag @product.image, class: "img-thumbnail", style: "max-width: 200px;" %>
+        <%= image_tag product.image, class: "img-thumbnail", style: "max-width: 200px;" %>
       </div>
     <% end %>
   </div>
