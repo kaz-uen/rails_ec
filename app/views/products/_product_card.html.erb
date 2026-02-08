@@ -31,7 +31,9 @@
     <!-- Product actions-->
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
       <div class="text-center">
-        <button class="btn btn-outline-dark mt-auto">カートに追加</button>
+        <%= form_with url: add_to_cart_product_path(product), method: :post, local: true do |form| %>
+          <%= form.submit "カートに追加", class: "btn btn-outline-dark mt-auto" %>
+        <% end %>
       </div>
     </div>
   </div>
