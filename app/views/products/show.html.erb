@@ -21,8 +21,8 @@
           <% end %>
         </div>
         <p class="lead"><%= @product.description %></p>
-        <%= form_with url: add_to_cart_product_path(@product), method: :post, local: true, class: "d-flex" do |form| %>
-          <%= form.number_field :quantity, value: 1, min: 1, class: "form-control text-center me-3", style: "max-width: 4rem;", id: "inputQuantity" %>
+        <%= form_with url: cart_items_path(product_id: @product.id), method: :post, local: true, class: "d-flex" do |form| %>
+          <%= form.number_field :quantity, value: 1, min: 1, class: "form-control text-center me-3", style: "max-width: 5rem; padding-right: 0.5rem;", id: "inputQuantity" %>
           <%= form.button class: "btn btn-outline-dark flex-shrink-0", type: "submit" do %>
             <i class="bi-cart-fill me-1"></i>
             カートに追加
