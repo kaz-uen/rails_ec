@@ -5,47 +5,57 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def cart_items_count
-    current_cart.values.sum
-  end
-
   def current_cart
-    @current_cart ||= session[:cart] || {}
-    session[:cart] = @current_cart
-    @current_cart
+    @current_cart ||= find_or_create_cart
   end
 
-  def add_product_to_cart(product_id, quantity = 1)
-    cart = current_cart
-    product_id_str = product_id.to_s
-    cart[product_id_str] = (cart[product_id_str] || 0) + quantity
-    session[:cart] = cart
+  def find_or_create_cart
+    if session[:cart_id]
+      Cart.find_by(id: session[:cart_id]) || create_new_cart
+    else
+      create_new_cart
+    end
   end
 
-  def remove_from_cart(product_id)
-    cart = current_cart
-    cart.delete(product_id.to_s)
-    session[:cart] = cart
+  def create_new_cart
+    cart = Cart.create
+    session[:cart_id] = cart.id
+    cart
+  end
+
+  def cart_items_count
+    current_cart.items_count
   end
 
   def cart_items
-    return [] if current_cart.empty?
-
-    product_ids = current_cart.keys.map(&:to_i)
-    products = Product.where(id: product_ids).index_by(&:id)
-
-    current_cart.map do |product_id, quantity|
-      product = products[product_id.to_i]
-      next unless product
-
+    current_cart.cart_items.includes(:product).map do |item|
       {
-        product:,
-        quantity: quantity.to_i
+        product: item.product,
+        quantity: item.quantity
       }
-    end.compact
+    end
   end
 
   def cart_total
-    cart_items.sum { |item| item[:product].price * item[:quantity] }
+    current_cart.total
+  end
+
+  def add_product_to_cart(product_id, quantity = 1)
+    product = Product.find(product_id)
+    cart_item = current_cart.cart_items.find_or_initialize_by(product_id: product.id)
+
+    if cart_item.new_record?
+      # 新規作成時は、そのまま数量を設定
+      cart_item.quantity = quantity
+    else
+      # 既存レコードの場合は、既存数量に追加
+      cart_item.quantity += quantity
+    end
+
+    cart_item.save!
+  end
+
+  def remove_from_cart(product_id)
+    current_cart.cart_items.where(product_id: product_id).destroy_all
   end
 end
