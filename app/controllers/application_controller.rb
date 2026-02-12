@@ -56,6 +56,6 @@ class ApplicationController < ActionController::Base
   end
 
   def remove_from_cart(product_id)
-    current_cart.cart_items.where(product_id: product_id).destroy_all
+    current_cart.cart_items.where(product_id:).destroy_all
   end
 end
