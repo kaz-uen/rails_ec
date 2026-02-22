@@ -37,7 +37,7 @@
     <p>
       <%= @order.last_name %> <%= @order.first_name %><br>
       <%= @order.address %><br>
-      <% if @order.address2.present? %>
+      <% if @order.address2? %>
         <%= @order.address2 %><br>
       <% end %>
       <%= @order.country %> <%= @order.state %> <%= @order.zip %>

@@ -12,7 +12,7 @@
 お届け先:
 <%= @order.last_name %> <%= @order.first_name %>
 <%= @order.address %>
-<% if @order.address2.present? %>
+<% if @order.address2? %>
 <%= @order.address2 %>
 <% end %>
 <%= @order.country %> <%= @order.state %> <%= @order.zip %>

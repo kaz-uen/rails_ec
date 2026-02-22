@@ -21,12 +21,12 @@
       <p>
         <%= @order.last_name %> <%= @order.first_name %><br>
         <%= @order.address %><br>
-        <% if @order.address2.present? %>
+        <% if @order.address2? %>
           <%= @order.address2 %><br>
         <% end %>
         <%= @order.country %> <%= @order.state %> <%= @order.zip %>
       </p>
-      <% if @order.email.present? %>
+      <% if @order.email? %>
         <p>メールアドレス: <%= @order.email %></p>
       <% end %>
       <h2>ご注文内容</h2>
