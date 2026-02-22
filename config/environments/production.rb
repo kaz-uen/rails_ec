@@ -96,4 +96,19 @@ Rails.application.configure do
 
   # Herokuのドメインを許可する
   config.hosts << /.*\.herokuapp\.com/
+
+  # メール送信設定
+  config.action_mailer.default_url_options = { host: ENV.fetch('MAILER_HOST',
+                                                               'anonymous-ec-47976436da70.herokuapp.com') }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: ENV.fetch('SMTP_ADDRESS', 'smtp.sendgrid.net'),
+    port: ENV.fetch('SMTP_PORT', 587).to_i,
+    domain: ENV.fetch('SMTP_DOMAIN', 'heroku.com'),
+    user_name: ENV['SENDGRID_USERNAME'],
+    password: ENV['SENDGRID_PASSWORD'],
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+  config.action_mailer.raise_delivery_errors = true
 end
