@@ -18,7 +18,7 @@ module Admin
       @product = Product.new(product_params)
 
       if @product.save
-        redirect_to admin_products_path, notice: '商品を作成しました。'
+        redirect_to admin_products_path, flash: { admin_notice: '商品を作成しました。' }
       else
         render :new, status: unprocessable_entity
       end
@@ -28,7 +28,7 @@ module Admin
 
     def update
       if @product.update(product_params)
-        redirect_to admin_products_path, notice: '商品を更新しました。'
+        redirect_to admin_products_path, flash: { admin_notice: '商品を更新しました。' }
       else
         render :edit, status: unprocessable_entity
       end
@@ -36,7 +36,7 @@ module Admin
 
     def destroy
       @product.destroy!
-      redirect_to admin_products_path, notice: '商品を削除しました。'
+      redirect_to admin_products_path, flash: { admin_notice: '商品を削除しました。' }
     end
 
     private
