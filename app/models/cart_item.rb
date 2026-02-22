@@ -16,7 +16,7 @@ class CartItem < ApplicationRecord
     order.order_items.create!(
       product_name: product.name,
       price_at_purchase: product.price,
-      quantity: quantity
+      quantity:
     )
     product.reduce_stock!(quantity)
   end
