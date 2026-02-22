@@ -9,24 +9,9 @@ class CheckoutsController < ApplicationController
     @order.total_price = cart.total
 
     ActiveRecord::Base.transaction do
-      # 在庫チェック（不足していればロールバック）
-      # product_id の昇順でソートしてロックを取得（デッドロック防止）
-      cart.cart_items.includes(:product).sort_by(&:product_id).each do |cart_item|
-        product = cart_item.product.lock!
-        raise ActiveRecord::RecordInvalid, product if product.stock_quantity < cart_item.quantity
-      end
-
-      @order.save!
-      cart.cart_items.includes(:product).each do |cart_item|
-        @order.order_items.create!(
-          product_name: cart_item.product.name,
-          price_at_purchase: cart_item.product.price,
-          quantity: cart_item.quantity
-        )
-        cart_item.product.decrement!(:stock_quantity, cart_item.quantity)
-      end
-      cart.destroy!
-      session[:cart_id] = nil
+      validate_stock!(cart)
+      save_order_and_items!(cart)
+      clear_cart!(cart)
     end
 
     OrderMailer.order_confirmation(@order).deliver_now
@@ -40,6 +25,32 @@ class CheckoutsController < ApplicationController
   end
 
   private
+
+  def validate_stock!(cart)
+    # 在庫チェック（不足していればロールバック）
+    # product_id の昇順でソートしてロックを取得（デッドロック防止）
+    cart.cart_items.includes(:product).sort_by(&:product_id).each do |cart_item|
+      product = cart_item.product.lock!
+      raise ActiveRecord::RecordInvalid, product if product.stock_quantity < cart_item.quantity
+    end
+  end
+
+  def save_order_and_items!(cart)
+    @order.save!
+    cart.cart_items.includes(:product).each do |cart_item|
+      @order.order_items.create!(
+        product_name: cart_item.product.name,
+        price_at_purchase: cart_item.product.price,
+        quantity: cart_item.quantity
+      )
+      cart_item.product.reduce_stock!(cart_item.quantity)
+    end
+  end
+
+  def clear_cart!(cart)
+    cart.destroy!
+    session[:cart_id] = nil
+  end
 
   def order_params
     params.require(:order).permit(
