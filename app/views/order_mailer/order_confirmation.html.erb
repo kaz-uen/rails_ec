@@ -6,7 +6,6 @@
   <body>
     <h1>ご注文ありがとうございます</h1>
     <p>注文番号: #<%= @order.id %></p>
-
     <h2>ご注文内容</h2>
     <table border="1" cellpadding="10" cellspacing="0">
       <thead>
@@ -34,7 +33,6 @@
         </tr>
       </tfoot>
     </table>
-
     <h2>お届け先</h2>
     <p>
       <%= @order.last_name %> <%= @order.first_name %><br>

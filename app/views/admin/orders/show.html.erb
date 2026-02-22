@@ -1,6 +1,5 @@
 <div class="container mt-4">
   <h1>購入明細詳細</h1>
-
   <div class="row">
     <div class="col-md-8">
       <h2>注文情報</h2>
@@ -18,7 +17,6 @@
           <td>¥<%= number_with_delimiter(@order.total_price) %></td>
         </tr>
       </table>
-
       <h2>お届け先</h2>
       <p>
         <%= @order.last_name %> <%= @order.first_name %><br>
@@ -31,7 +29,6 @@
       <% if @order.email.present? %>
         <p>メールアドレス: <%= @order.email %></p>
       <% end %>
-
       <h2>ご注文内容</h2>
       <table class="table table-striped">
         <thead>
@@ -61,6 +58,5 @@
       </table>
     </div>
   </div>
-
   <%= link_to "一覧に戻る", admin_orders_path, class: "btn btn-secondary" %>
 </div>
