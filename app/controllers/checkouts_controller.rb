@@ -29,22 +29,12 @@ class CheckoutsController < ApplicationController
   def validate_stock!(cart)
     # 在庫チェック（不足していればロールバック）
     # product_id の昇順でソートしてロックを取得（デッドロック防止）
-    cart.cart_items.includes(:product).sort_by(&:product_id).each do |cart_item|
-      product = cart_item.product.lock!
-      raise ActiveRecord::RecordInvalid, product if product.stock_quantity < cart_item.quantity
-    end
+    cart.cart_items.includes(:product).sort_by(&:product_id).each(&:validate_stock!)
   end
 
   def save_order_and_items!(cart)
     @order.save!
-    cart.cart_items.includes(:product).each do |cart_item|
-      @order.order_items.create!(
-        product_name: cart_item.product.name,
-        price_at_purchase: cart_item.product.price,
-        quantity: cart_item.quantity
-      )
-      cart_item.product.reduce_stock!(cart_item.quantity)
-    end
+    cart.cart_items.includes(:product).each { |cart_item| cart_item.add_to_order!(@order) }
   end
 
   def clear_cart!(cart)
