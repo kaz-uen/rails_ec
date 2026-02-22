@@ -102,11 +102,11 @@ Rails.application.configure do
                                                                'anonymous-ec-47976436da70.herokuapp.com') }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: ENV.fetch('SMTP_ADDRESS', 'smtp.sendgrid.net'),
-    port: ENV.fetch('SMTP_PORT', 587).to_i,
-    domain: ENV.fetch('SMTP_DOMAIN', 'heroku.com'),
-    user_name: ENV['SENDGRID_USERNAME'],
-    password: ENV['SENDGRID_PASSWORD'],
+    address: ENV.fetch('MAILGUN_SMTP_SERVER', 'smtp.mailgun.org'),
+    port: ENV.fetch('MAILGUN_SMTP_PORT', 587).to_i,
+    domain: ENV.fetch('MAILGUN_DOMAIN', 'heroku.com'),
+    user_name: ENV['MAILGUN_SMTP_LOGIN'],
+    password: ENV['MAILGUN_SMTP_PASSWORD'],
     authentication: :plain,
     enable_starttls_auto: true
   }
