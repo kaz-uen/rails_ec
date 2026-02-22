@@ -3,7 +3,13 @@
 class Product < ApplicationRecord
   has_one_attached :image
 
+  validates :stock_quantity, numericality: { greater_than_or_equal_to: 0 }
+
   before_save :set_is_on_sale
+
+  def reduce_stock!(quantity)
+    update!(stock_quantity: stock_quantity - quantity)
+  end
 
   private
 
