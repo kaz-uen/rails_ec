@@ -1,0 +1,18 @@
+ご注文ありがとうございます
+
+注文番号: #<%= @order.id %>
+
+ご注文内容:
+<% @order.order_items.each do |item| %>
+  - <%= item.product_name %>: ¥<%= number_with_delimiter(item.price_at_purchase) %> × <%= item.quantity %> = ¥<%= number_with_delimiter(item.price_at_purchase * item.quantity) %>
+<% end %>
+
+合計: ¥<%= number_with_delimiter(@order.total_price) %>
+
+お届け先:
+<%= @order.last_name %> <%= @order.first_name %>
+<%= @order.address %>
+<% if @order.address2.present? %>
+<%= @order.address2 %>
+<% end %>
+<%= @order.country %> <%= @order.state %> <%= @order.zip %>
