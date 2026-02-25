@@ -96,4 +96,19 @@ Rails.application.configure do
 
   # Herokuのドメインを許可する
   config.hosts << /.*\.herokuapp\.com/
+
+  # メール送信設定
+  config.action_mailer.default_url_options = { host: ENV.fetch('MAILER_HOST',
+                                                               'anonymous-ec-47976436da70.herokuapp.com') }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: ENV.fetch('MAILGUN_SMTP_SERVER', 'smtp.mailgun.org'),
+    port: ENV.fetch('MAILGUN_SMTP_PORT', 587).to_i,
+    domain: ENV.fetch('MAILGUN_DOMAIN', 'heroku.com'),
+    user_name: ENV['MAILGUN_SMTP_LOGIN'],
+    password: ENV['MAILGUN_SMTP_PASSWORD'],
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+  config.action_mailer.raise_delivery_errors = true
 end

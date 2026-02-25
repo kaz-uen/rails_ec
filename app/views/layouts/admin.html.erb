@@ -19,9 +19,9 @@
       </div>
     </nav>
     <div class="container mt-4 mb-4">
-      <% if notice %>
+      <% if flash[:admin_notice] %>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <%= notice %>
+          <%= flash[:admin_notice] %>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
       <% end %>

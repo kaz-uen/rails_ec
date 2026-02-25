@@ -40,142 +40,124 @@
       </form>
     </div>
     <div class="col-md-8 order-md-1">
-      <h4 class="mb-3">請求先住所</h4>
-      <form class="needs-validation" novalidate>
+      <%= form_with model: @order || Order.new, url: checkouts_path, local: true, class: "needs-validation", novalidate: true do |form| %>
+        <h4 class="mb-3">請求先住所</h4>
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label for="firstName">姓</label>
-            <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+            <%= form.label :first_name, "姓" %>
+            <%= form.text_field :first_name, class: "form-control", id: "firstName", required: true %>
             <div class="invalid-feedback">
               有効な姓を入力してください。
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label for="lastName">名</label>
-            <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+            <%= form.label :last_name, "名" %>
+            <%= form.text_field :last_name, class: "form-control", id: "lastName", required: true %>
             <div class="invalid-feedback">
               有効な名前を入力してください。
             </div>
           </div>
         </div>
         <div class="mb-3">
-          <label for="username">ユーザー名</label>
+          <%= form.label :username, "ユーザー名" %>
           <div class="input-group">
             <span class="input-group-text">@</span>
-            <input type="text" class="form-control" id="username" placeholder="Username" required>
+            <%= form.text_field :username, class: "form-control", id: "username", placeholder: "Username", required: true %>
             <div class="invalid-feedback" style="width: 100%;">
               ユーザー名は必須です。
             </div>
           </div>
         </div>
         <div class="mb-3">
-          <label for="email">メールアドレス <span class="text-muted">(任意)</span></label>
-          <input type="email" class="form-control" id="email" placeholder="you@example.com">
+          <%= form.label :email, "メールアドレス" %>
+          <span class="text-muted">(任意)</span>
+          <%= form.email_field :email, class: "form-control", id: "email", placeholder: "you@example.com" %>
           <div class="invalid-feedback">
             有効なメールアドレスを入力してください。
           </div>
         </div>
         <div class="mb-3">
-          <label for="address">住所</label>
-          <input type="text" class="form-control" id="address" placeholder="例：東京都港区○○" required>
+          <%= form.label :address, "住所" %>
+          <%= form.text_field :address, class: "form-control", id: "address", placeholder: "例：東京都港区○○", required: true %>
           <div class="invalid-feedback">
             有効な配送先住所を入力してください。
           </div>
         </div>
         <div class="mb-3">
-          <label for="address2">住所2 <span class="text-muted">(任意)</span></label>
-          <input type="text" class="form-control" id="address2" placeholder="例：○○マンション">
+          <%= form.label :address2, "住所2" %>
+          <span class="text-muted">(任意)</span>
+          <%= form.text_field :address2, class: "form-control", id: "address2", placeholder: "例：○○マンション" %>
         </div>
         <div class="row">
           <div class="col-md-5 mb-3">
-            <label for="country">国</label>
-            <select class="form-select" id="country" required>
-              <option value="">選択する</option>
-              <option>アメリカ</option>
-            </select>
+            <%= form.label :country, "国" %>
+            <%= form.select :country, [["アメリカ", "アメリカ"]], { prompt: "選択する" }, { class: "form-select", id: "country", required: true } %>
             <div class="invalid-feedback">
               有効な国を選択してください。
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <label for="state">州</label>
-            <select class="form-select" id="state" required>
-              <option value="">選択する</option>
-              <option>カリフォルニア</option>
-            </select>
+            <%= form.label :state, "州" %>
+            <%= form.select :state, [["カリフォルニア", "カリフォルニア"], ["ニューヨーク", "ニューヨーク"]], { prompt: "選択する" }, { class: "form-select", id: "state", required: true } %>
             <div class="invalid-feedback">
               有効な州を入力してください。
             </div>
           </div>
           <div class="col-md-3 mb-3">
-            <label for="zip">郵便番号</label>
-            <input type="text" class="form-control" id="zip" placeholder="ハイフンなし" required>
+            <%= form.label :zip, "郵便番号" %>
+            <%= form.text_field :zip, class: "form-control", id: "zip", placeholder: "ハイフンなし", required: true %>
             <div class="invalid-feedback">
               郵便番号は必須です。
             </div>
           </div>
         </div>
         <hr class="mb-4">
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="same-address">
-          <label class="custom-control-label" for="same-address">配送先住所は請求先住所と同じです</label>
+        <div class="form-check mb-2">
+          <%= form.check_box :same_address, { id: "same-address", class: "form-check-input" }, "1", "0" %>
+          <%= form.label :same_address, "配送先住所は請求先住所と同じです", class: "form-check-label", for: "same-address" %>
         </div>
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="save-info">
-          <label class="custom-control-label" for="save-info">次回のためにこの情報を保存する</label>
+        <div class="form-check mb-2">
+          <%= form.check_box :save_info, { id: "save-info", class: "form-check-input" }, "1", "0" %>
+          <%= form.label :save_info, "次回のためにこの情報を保存する", class: "form-check-label", for: "save-info" %>
         </div>
         <hr class="mb-4">
-      </form>
-      <h4 class="mb-3">支払い方法</h4>
-      <div class="d-block my-3">
-        <div class="custom-control custom-radio">
-          <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
-          <label class="custom-control-label" for="credit">クレジットカード</label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
-          <label class="custom-control-label" for="debit">デビットカード</label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
-          <label class="custom-control-label" for="paypal">PayPal</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="cc-name">カード名義人</label>
-          <input type="text" class="form-control" id="cc-name" placeholder="" required>
-          <small class="text-muted">カードに記載されている氏名</small>
-          <div class="invalid-feedback">
-            カード名義人は必須です
+        <h4 class="mb-3">支払い方法（クレジットカード）</h4>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <%= form.label :card_name, "カード名義人" %>
+            <%= form.text_field :card_name, class: "form-control", id: "cc-name", placeholder: "", required: true %>
+            <small class="text-muted">カードに記載されている氏名</small>
+            <div class="invalid-feedback">
+              カード名義人は必須です
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <%= form.label :card_number, "クレジットカード番号" %>
+            <%= form.text_field :card_number, class: "form-control", id: "cc-number", placeholder: "", required: true %>
+            <div class="invalid-feedback">
+              クレジットカード番号は必須です
+            </div>
           </div>
         </div>
-        <div class="col-md-6 mb-3">
-          <label for="cc-number">クレジットカード番号</label>
-          <input type="text" class="form-control" id="cc-number" placeholder="" required>
-          <div class="invalid-feedback">
-            クレジットカード番号は必須です
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <%= form.label :card_exp, "有効期限" %>
+            <%= form.text_field :card_exp, class: "form-control", id: "cc-expiration", placeholder: "MM/YY", required: true %>
+            <div class="invalid-feedback">
+              有効期限は必須です
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <%= form.label :card_cvv, "セキュリティコード" %>
+            <%= form.text_field :card_cvv, class: "form-control", id: "cc-cvv", placeholder: "", required: true %>
+            <div class="invalid-feedback">
+              セキュリティコードは必須です
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-3 mb-3">
-          <label for="cc-expiration">有効期限</label>
-          <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-          <div class="invalid-feedback">
-            有効期限は必須です
-          </div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <label for="cc-cvv">セキュリティコード</label>
-          <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-          <div class="invalid-feedback">
-            セキュリティコードは必須です
-          </div>
-        </div>
-      </div>
-      <hr class="mb-4">
-      <button class="btn btn-primary btn-lg btn-block w-100" type="submit">チェックアウトを続行する</button>
+        <hr class="mb-4">
+        <%= form.submit "購入する", class: "btn btn-primary btn-lg btn-block w-100" %>
+      <% end %>
     </div>
   </div>
 </div>
