@@ -4,7 +4,12 @@ Rails.application.routes.draw do
   resources :products, only: %i[index show]
   root 'products#index'
 
-  resource :cart, only: [:show]
+  resource :cart, only: [:show] do
+    member do
+      post :apply_promotion_code
+      post :remove_promotion_code
+    end
+  end
   resources :cart_items, only: %i[create destroy], param: :product_id
   resources :checkouts, only: [:create]
 
