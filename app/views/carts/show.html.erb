@@ -27,17 +27,32 @@
             </li>
           <% end %>
           <li class="list-group-item d-flex justify-content-between">
-            <span>合計</span>
+            <span>小計</span>
             <strong>¥<%= number_with_delimiter(@cart_total) %></strong>
+          </li>
+          <% if @promotion_code %>
+            <li class="list-group-item d-flex justify-content-between text-success">
+              <span>割引</span>
+              <strong>-¥<%= number_with_delimiter(@promotion_code.discount_amount) %></strong>
+            </li>
+          <% end %>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>合計</span>
+            <strong>¥<%= number_with_delimiter(@cart_total - (@promotion_code&.discount_amount || 0)) %></strong>
           </li>
         <% end %>
       </ul>
-      <form class="card p-2">
+      <%= form_with url: apply_promotion_code_cart_path, method: :post, local: true, class: "card p-2" do |form| %>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="プロモーションコード">
-          <button type="submit" class="btn btn-secondary">適用</button>
+          <%= form.text_field :promotion_code, class: "form-control", placeholder: "プロモーションコード", value: @promotion_code&.code %>
+          <%= form.submit "適用", class: "btn btn-secondary" %>
         </div>
-      </form>
+        <% if @promotion_code %>
+          <div class="mt-2 text-success">
+            <small>割引額: ¥<%= number_with_delimiter(@promotion_code.discount_amount) %></small>
+          </div>
+        <% end %>
+      <% end %>
     </div>
     <div class="col-md-8 order-md-1">
       <%= form_with model: @order || Order.new, url: checkouts_path, local: true, class: "needs-validation", novalidate: true do |form| %>
