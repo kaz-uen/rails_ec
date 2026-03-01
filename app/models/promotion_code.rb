@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PromotionCode < ApplicationRecord
-  has_many :orders
+  has_many :orders, dependent: :nullify
 
   validates :code, presence: true, uniqueness: true, length: { is: 7 }
   validates :discount_amount, presence: true, numericality: { in: 100..1000 }
