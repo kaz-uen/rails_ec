@@ -19,8 +19,8 @@ class Order < ApplicationRecord
   def promotion_code_must_be_available
     return unless promotion_code
 
-    unless promotion_code.available?
-      errors.add(:promotion_code, 'は既に使用済みです')
-    end
+    return if promotion_code.available?
+
+    errors.add(:promotion_code, 'は既に使用済みです')
   end
 end
