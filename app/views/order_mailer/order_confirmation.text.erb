@@ -10,7 +10,7 @@
 <% subtotal = @order.order_items.sum { |item| item.price_at_purchase * item.quantity } %>
 小計: ¥<%= number_with_delimiter(subtotal) %>
 <% if @order.promotion_code %>
-割引: -¥<%= number_with_delimiter(@order.promotion_code.discount_amount) %>
+割引: -¥<%= number_with_delimiter(@order.discount_amount) %>
 <% end %>
 合計: ¥<%= number_with_delimiter(@order.total_price) %>
 
