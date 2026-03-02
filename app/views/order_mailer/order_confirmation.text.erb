@@ -7,6 +7,11 @@
   - <%= item.product_name %>: ¥<%= number_with_delimiter(item.price_at_purchase) %> × <%= item.quantity %> = ¥<%= number_with_delimiter(item.price_at_purchase * item.quantity) %>
 <% end %>
 
+<% subtotal = @order.order_items.sum { |item| item.price_at_purchase * item.quantity } %>
+小計: ¥<%= number_with_delimiter(subtotal) %>
+<% if @order.promotion_code %>
+割引: -¥<%= number_with_delimiter(@order.discount_amount) %>
+<% end %>
 合計: ¥<%= number_with_delimiter(@order.total_price) %>
 
 お届け先:

@@ -50,6 +50,17 @@
           <% end %>
         </tbody>
         <tfoot>
+          <% subtotal = @order.order_items.sum { |item| item.price_at_purchase * item.quantity } %>
+          <tr>
+            <th colspan="3">小計</th>
+            <th>¥<%= number_with_delimiter(subtotal) %></th>
+          </tr>
+          <% if @order.promotion_code %>
+            <tr class="text-success">
+              <th colspan="3">割引</th>
+              <th>-¥<%= number_with_delimiter(@order.discount_amount) %></th>
+            </tr>
+          <% end %>
           <tr>
             <th colspan="3">合計</th>
             <th>¥<%= number_with_delimiter(@order.total_price) %></th>

@@ -27,17 +27,39 @@
             </li>
           <% end %>
           <li class="list-group-item d-flex justify-content-between">
-            <span>合計</span>
+            <span>小計</span>
             <strong>¥<%= number_with_delimiter(@cart_total) %></strong>
+          </li>
+          <% if @promotion_code %>
+            <li class="list-group-item d-flex justify-content-between text-success">
+              <span>割引</span>
+              <strong>-¥<%= number_with_delimiter(@promotion_code.discount_amount) %></strong>
+            </li>
+          <% end %>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>合計</span>
+            <strong>¥<%= number_with_delimiter(@cart_total - (@promotion_code&.discount_amount || 0)) %></strong>
           </li>
         <% end %>
       </ul>
-      <form class="card p-2">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="プロモーションコード">
-          <button type="submit" class="btn btn-secondary">適用</button>
-        </div>
-      </form>
+      <div class="card p-2">
+        <% if @promotion_code %>
+          <div class="input-group">
+            <input type="text" class="form-control" value="<%= @promotion_code.code %>" readonly>
+            <%= button_to "解除", cart_path, method: :patch, params: { remove_promotion_code: "1" }, class: "btn btn-outline-danger" %>
+          </div>
+          <div class="mt-2 text-success">
+            <small>割引額: ¥<%= number_with_delimiter(@promotion_code.discount_amount) %></small>
+          </div>
+        <% else %>
+          <%= form_with url: cart_path, method: :patch, local: true do |form| %>
+            <div class="input-group">
+              <%= form.text_field :promotion_code, class: "form-control", placeholder: "プロモーションコード" %>
+              <%= form.submit "適用", class: "btn btn-secondary" %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     </div>
     <div class="col-md-8 order-md-1">
       <%= form_with model: @order || Order.new, url: checkouts_path, local: true, class: "needs-validation", novalidate: true do |form| %>

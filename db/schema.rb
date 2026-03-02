@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_02_20_002602) do
+ActiveRecord::Schema[7.0].define(version: 2026_03_01_082635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -85,7 +85,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_02_20_002602) do
     t.string "card_cvv", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "promotion_code_id"
     t.index ["email"], name: "index_orders_on_email"
+    t.index ["promotion_code_id"], name: "index_orders_on_promotion_code_id"
     t.index ["username"], name: "index_orders_on_username"
   end
 
@@ -102,6 +104,15 @@ ActiveRecord::Schema[7.0].define(version: 2026_02_20_002602) do
     t.index ["sku"], name: "index_products_on_sku", unique: true
   end
 
+  create_table "promotion_codes", force: :cascade do |t|
+    t.string "code", null: false
+    t.integer "discount_amount", null: false
+    t.boolean "is_used", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_promotion_codes_on_code", unique: true
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -115,4 +126,5 @@ ActiveRecord::Schema[7.0].define(version: 2026_02_20_002602) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "order_items", "orders"
+  add_foreign_key "orders", "promotion_codes"
 end
